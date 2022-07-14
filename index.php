@@ -1,11 +1,10 @@
-<?php 
-  if (file_exists("contacts.json")) {
-    $contacts = json_decode(file_get_contents("contacts.json"), true);
-  } else {
-    $contacts = [];
-  }
-?>
+<?php
 
+require "database.php";
+
+$contacts = $conn->query("SELECT * FROM contacts");
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +12,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Bootstrap -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.1.3/darkly/bootstrap.min.css"
@@ -26,7 +27,10 @@
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"
   ></script>
+
+  <!-- Static Content -->
   <link rel="stylesheet" href="./static/css/index.css" />
+
   <title>Contacts App</title>
 </head>
 <body>
@@ -50,7 +54,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.php">Home</a>
+            <a class="nav-link" href="#">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="add.php">Add Contact</a>
@@ -59,10 +63,12 @@
       </div>
     </div>
   </nav>
+
   <main>
     <div class="container pt-4 p-3">
       <div class="row">
-      <?php if (count($contacts) == 0): ?>
+        
+        <?php if ($contacts->rowCount() == 0): ?>
           <div class="col-md-4 mx-auto">
             <div class="card card-body text-center">
               <p>No contacts saved yet</p>
@@ -82,6 +88,7 @@
             </div>
           </div>
         <?php endforeach ?>
+
       </div>
     </div>
   </main>
